@@ -1,4 +1,4 @@
-<p>lord</p>
+
 <?php
 session_start();
 
@@ -20,7 +20,7 @@ if (isset($_SESSION['error_message'])) {
 }
 
 try {
-    // Database connection with UTF-8 encoding
+    // Database connection with UTF-8 encoding\
     $pdo = new PDO("mysql:host=localhost;dbname=library;charset=utf8mb4", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
