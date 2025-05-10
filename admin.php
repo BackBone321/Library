@@ -1,4 +1,4 @@
-<p>hello</p>
+
 <?php
 session_start();
 
