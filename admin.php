@@ -1,8 +1,9 @@
-
+<p>hello</p>
 <?php
 session_start();
 
-// Generate CSRF token if not exists
+// Generate CSRF token if not existsclear
+
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
