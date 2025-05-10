@@ -1,4 +1,4 @@
-
+<p>lord</p>
 <?php
 session_start();
 
