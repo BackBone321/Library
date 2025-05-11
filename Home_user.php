@@ -667,12 +667,9 @@
                                             <?php endif; ?>
                                         </td>
                                         <td class="contact-icons">
-                                            <a href="mailto:<?php echo htmlspecialchars($book['email']); ?>" title="Email">
-                                                <i class="fas fa-envelope"></i> Email
-                                            </a><br>
-                                            <a href="tel:<?php echo htmlspecialchars($book['phone']); ?>" title="Call">
-                                                <i class="fas fa-phone"></i> Call
-                                            </a>
+                                            <a href="mailto:<?php echo htmlspecialchars($book['email']); ?>"><?php echo htmlspecialchars($book['email']); ?></a><br>
+                                            <a href="tel:<?php echo htmlspecialchars($book['phone']); ?>"><?php echo htmlspecialchars($book['phone']); ?></a>
+                                           
                                             <?php if (!empty($book['facebook'])): ?>
                                             <br>
                                             <a href="<?php echo htmlspecialchars($book['facebook']); ?>" target="_blank" title="Facebook">
