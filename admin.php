@@ -1,9 +1,7 @@
-
 <?php
 session_start();
 
-// Generate CSRF token if not existsclear
-
+// Generate CSRF token if not exists
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -21,7 +19,7 @@ if (isset($_SESSION['error_message'])) {
 }
 
 try {
-    // Database connection with UTF-8 encoding\
+    // Database connection with UTF-8 encoding
     $pdo = new PDO("mysql:host=localhost;dbname=library;charset=utf8mb4", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -381,7 +379,7 @@ try {
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="?page=home">
-                <i class="fas fa-book-reader"></i> LIBRARY Opening hours - monday to friday 8:00 am to 5:00 pm
+                <i class="fas fa-book-reader"></i>LIBRARY Opening hours - monday to friday 8:00 am to 5:00 pm
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -426,37 +424,37 @@ try {
         <?php endif; ?>
 
         <?php if ($page === 'home' || $page === ''): ?>
-            <!-- Dashboard Statistics -->
-            <div class="row mb-4">
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-card stats-total">
-                        <div class="icon"><i class="fas fa-books"></i></div>
-                        <div class="count"><?php echo $totalBooks; ?></div>
-                        <div class="title">Total Books</div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-card stats-available">
-                        <div class="icon"><i class="fas fa-book"></i></div>
-                        <div class="count"><?php echo $availableBooksCount; ?></div>
-                        <div class="title">Available Books</div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-card stats-borrowed">
-                        <div class="icon"><i class="fas fa-hand-holding-heart"></i></div>
-                        <div class="count"><?php echo $borrowedBooksCount; ?></div>
-                        <div class="title">Borrowed Books</div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="stats-card stats-overdue">
-                        <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="count"><?php echo $overdueBooksCount; ?></div>
-                        <div class="title">Overdue Books</div>
-                    </div>
-                </div>
-            </div>
+           <!-- Dashboard Statistics -->
+<div class="row mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card stats-total">
+            <div class="icon"><i class="fas fa-books"></i></div>
+            <div class="count"><?php echo $totalBooks; ?></div>
+            <div class="title">Total Books</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card stats-available">
+            <div class="icon"><i class="fas fa-book"></i></div>
+            <div class="count"><?php echo $availableBooksCount; ?></div>
+            <div class="title">Available Books</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+         <div class="stats-card" style="background: linear-gradient(45deg, #FFC107, #87CEEB);">
+            <div class="icon"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="count"><?php echo $borrowedBooksCount; ?></div>
+            <div class="title">Borrowed Books and Request</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card" style="background: linear-gradient(45deg,rgb(226, 103, 2),rgb(151, 3, 3));">
+            <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="count"><?php echo $overdueBooksCount; ?></div>
+            <div class="title">Overdue Books</div>
+        </div>
+    </div>
+</div>
 
             <!-- Main Content Tabs -->
             <div class="card">
@@ -479,135 +477,153 @@ try {
                 <div class="card-body p-0">
                     <div class="tab-content p-3" id="libraryTabsContent">
                         <!-- Borrow Books Tab -->
-                        <div class="tab-pane fade show active" id="borrow-tab-pane" role="tabpanel" aria-labelledby="borrow-tab" tabindex="0">
-                            <form method="POST" action="">
-                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                                
-                                <!-- Borrower Information Card -->
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <h5 class="mb-0"><i class="fas fa-user-graduate me-2"></i>Borrower Information</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row g-3">
-                                            <div class="col-md-4">
-                                                <label for="student_id" class="form-label">Student ID</label>
-                                                <input type="text" class="form-control" id="student_id" name="student_id" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['student_id'] ?? ''); ?>" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="first_name" class="form-label">First Name</label>
-                                                <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['first_name'] ?? ''); ?>" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="middle_name" class="form-label">Middle Name</label>
-                                                <input type="text" class="form-control" id="middle_name" name="middle_name" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['middle_name'] ?? ''); ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="last_name" class="form-label">Last Name</label>
-                                                <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['last_name'] ?? ''); ?>" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="date_borrowed" class="form-label">Date Borrowed</label>
-                                                <input type="date" class="form-control" id="date_borrowed" name="date_borrowed" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['date_borrowed'] ?? date('Y-m-d')); ?>" required>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="phone" class="form-label">Phone Number</label>
-                                                <input type="text" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['phone'] ?? ''); ?>" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="facebook" class="form-label">Facebook Profile</label>
-                                                <input type="url" class="form-control" id="facebook" name="facebook" placeholder="https://www.facebook.com/username" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['facebook'] ?? ''); ?>">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="email" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['email'] ?? ''); ?>" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                          <!-- Book Selection Card -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-book me-2"></i>Select Books to Borrow</h5>
+                 
+<div class="tab-pane fade show active" id="borrow-tab-pane" role="tabpanel" aria-labelledby="borrow-tab" tabindex="0">
+    <form method="POST" action="" onsubmit="console.log('Borrow form submitted');">
+        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+        
+        <!-- Borrower Information Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user-graduate me-2"></i>Borrower Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="student_id" class="form-label">Student ID</label>
+                        <input type="text" class="form-control" id="student_id" name="student_id" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['student_id'] ?? ''); ?>" required>
                     </div>
-                    <div class="card-body">
-                        <!-- Search and Filter -->
-                        <div class="row mb-4">
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
-                                        id="bookSearch" onkeyup="filterBooks()">
-                                    <button class="btn btn-outline-light" type="button">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-check form-switch">
-                                    
-                                    <input class="form-check-input" type="checkbox" id="showOnlyAvailable" onchange="filterBooks()">
-                                    <label class="form-check-label" for="showOnlyAvailable">Show only available books</label>
-                                </div>
-                                <button type="submit" name="borrow" class="btn btn-primary mt-3">
+                    <div class="col-md-4">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['first_name'] ?? ''); ?>" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="middle_name" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="middle_name" name="middle_name" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['middle_name'] ?? ''); ?>">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['last_name'] ?? ''); ?>" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="date_borrowed" class="form-label">Date Borrowed</label>
+                        <input type="date" class="form-control" id="date_borrowed" name="date_borrowed" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['date_borrowed'] ?? date('Y-m-d')); ?>" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['phone'] ?? ''); ?>" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="facebook" class="form-label">Facebook Profile</label>
+                        <input type="url" class="form-control" id="facebook" name="facebook" placeholder="https://www.facebook.com/username" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['facebook'] ?? ''); ?>">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($_SESSION['borrower_form']['email'] ?? ''); ?>" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Book Selection Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-book me-2"></i>Select Books to Borrow</h5>
+            </div>
+            <div class="card-body">
+                <!-- Search and Filter -->
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
+                                id="bookSearch" onkeyup="filterBooks()">
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showOnlyAvailable" onchange="filterBooks()">
+                            <label class="form-check-label" for="showOnlyAvailable">Show only available books</label>
+                        </div>
+                        <button type="submit" name="borrow" class="btn btn-primary mt-3">
                             <i class="fas fa-paper-plane me-2"></i>Submit Borrowing Request
                         </button>
-                            </div>
-                        </div>
+                    </div>
+                </div>
 
-                                                                <!-- Book List with Selection -->
-                                                                <div class="table-responsive">
-                                                                    <table class="table table-hover" id="bookTable">
-                                                                        <thead>
-                                                                    <tr>
-                                                                        <th style="width: 50px;"></th>
-                                                                        <th>Title</th>
-                                                                        <th>Author</th>
-                                                                        <th>Genre</th>
-                                                                        <th>Status</th>
-                                                                    </tr>
-                                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($allBooksForDisplay as $book): ?>
-                                                <tr class="book-item <?php echo $book['status'] === 'Available' ? 'book-status-available' : 'book-status-unavailable'; ?>"
-                                                    data-status="<?php echo htmlspecialchars($book['status']); ?>"
-                                                    data-title="<?php echo htmlspecialchars($book['title']); ?>"
-                                                    data-author="<?php echo htmlspecialchars($book['author']); ?>"
-                                                    data-genre="<?php echo htmlspecialchars($book['genre']); ?>">
-                                                    <td>
-                                                        <?php if ($book['status'] === 'Available'): ?>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="selected_books[]" 
-                                                                value="<?php echo $book['id']; ?>" id="book<?php echo $book['id']; ?>">
-                                                        </div>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td><?php echo htmlspecialchars($book['title']); ?></td>
-                                                    <td><?php echo htmlspecialchars($book['author']); ?></td>
-                                                    <td><?php echo htmlspecialchars($book['genre']); ?></td>
-                                                    <td>
-                                                        <?php if ($book['status'] === 'Available'): ?>
-                                                            <span class="badge bg-success">Available</span>
-                                                        <?php else: ?>
-                                                            <span class="badge bg-danger">Borrowed</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
+                <!-- Book List with Selection -->
+                <div class="table-responsive">
+                    <table class="table table-hover" id="bookTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">ID</th>
+                                <th style="width: 50px;"></th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Genre</th>
+                                <th>Status</th>
+                                <th>Days Out</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($allBooksForDisplay as $book): ?>
+                            <tr class="book-item <?php echo $book['status'] === 'Available' ? 'book-status-available' : 'book-status-unavailable'; ?>"
+                                data-status="<?php echo htmlspecialchars($book['status']); ?>"
+                                data-title="<?php echo htmlspecialchars($book['title']); ?>"
+                                data-author="<?php echo htmlspecialchars($book['author']); ?>"
+                                data-genre="<?php echo htmlspecialchars($book['genre']); ?>">
+                                <td><?php echo htmlspecialchars($book['id']); ?></td>
+                                <td>
+                                    <?php if ($book['status'] === 'Available'): ?>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="selected_books[]" 
+                                            value="<?php echo $book['id']; ?>" id="book<?php echo $book['id']; ?>">
                                     </div>
-        
-                                        <!-- No Books Message -->
-                                        <div id="noBooks" class="alert alert-info text-center d-none">
-                                            <i class="fas fa-info-circle me-2"></i> No books match your search criteria
-                                        </div>
-                                        
-                                    
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo htmlspecialchars($book['title']); ?></td>
+                                <td><?php echo htmlspecialchars($book['author']); ?></td>
+                                <td><?php echo htmlspecialchars($book['genre']); ?></td>
+                                <td>
+                                    <?php if ($book['status'] === 'Available'): ?>
+                                        <span class="badge bg-success">Available</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-danger">Borrowed</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    $stmt = $pdo->prepare("SELECT DATEDIFF(CURDATE(), date_borrowed) as days_out FROM borrowed_books WHERE book_id = ?");
+                                    $stmt->execute([$book['id']]);
+                                    $borrowed = $stmt->fetch(PDO::FETCH_ASSOC);
+                                    if ($borrowed && $book['status'] === 'Not Available') {
+                                        $days_out = $borrowed['days_out'];
+                                        if ($days_out > 14) {
+                                            echo '<span class="badge bg-danger">' . $days_out . ' days</span>';
+                                        } elseif ($days_out > 7) {
+                                            echo '<span class="badge bg-warning text-dark">' . $days_out . ' days</span>';
+                                        } else {
+                                            echo '<span class="badge bg-info">' . $days_out . ' days</span>';
+                                        }
+                                    } else {
+                                        echo 'N/A';
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- No Books Message -->
+                <div id="noBooks" class="alert alert-info text-center d-none">
+                    <i class="fas fa-info-circle me-2"></i> No books match your search criteria
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
                         
                         <!-- Books Catalog Tab -->
                         <div class="tab-pane fade" id="books-tab-pane" role="tabpanel" aria-labelledby="books-tab" tabindex="0">
@@ -619,11 +635,8 @@ try {
                                         <div class="input-group">
                                             <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
                                                    name="search" id="catalogSearch">
-                                            
-                                            </button>
                                         </div>
                                     </div>
-                                 
                                 </div>
                             </form>
 
@@ -632,10 +645,12 @@ try {
                                 <table class="table table-hover" id="catalogTable">
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Title</th>
                                             <th>Author</th>
                                             <th>Genre</th>
                                             <th>Status</th>
+                                            <th>Days Out</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -646,6 +661,7 @@ try {
                                                 data-author="<?php echo htmlspecialchars($book['author']); ?>"
                                                 data-genre="<?php echo htmlspecialchars($book['genre']); ?>"
                                                 data-status="<?php echo htmlspecialchars($book['status']); ?>">
+                                                <td><?php echo htmlspecialchars($book['id']); ?></td>
                                                 <td><?php echo htmlspecialchars($book['title']); ?></td>
                                                 <td><?php echo htmlspecialchars($book['author']); ?></td>
                                                 <td><?php echo htmlspecialchars($book['genre']); ?></td>
@@ -656,11 +672,30 @@ try {
                                                         <span class="badge bg-danger">Borrowed</span>
                                                     <?php endif; ?>
                                                 </td>
+                                                <td>
+                                                    <?php
+                                                    $stmt = $pdo->prepare("SELECT DATEDIFF(CURDATE(), date_borrowed) as days_out FROM borrowed_books WHERE book_id = ?");
+                                                    $stmt->execute([$book['id']]);
+                                                    $borrowed = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                    if ($borrowed && $book['status'] === 'Not Available') {
+                                                        $days_out = $borrowed['days_out'];
+                                                        if ($days_out > 14) {
+                                                            echo '<span class="badge bg-danger">' . $days_out . ' days</span>';
+                                                        } elseif ($days_out > 7) {
+                                                            echo '<span class="badge bg-warning text-dark">' . $days_out . ' days</span>';
+                                                        } else {
+                                                            echo '<span class="badge bg-info">' . $days_out . ' days</span>';
+                                                        }
+                                                    } else {
+                                                        echo 'N/A';
+                                                    }
+                                                    ?>
+                                                </td>
                                             </tr>
                                             <?php endforeach; ?>
                                         <?php else: ?>
                                             <tr>
-                                                <td colspan="4" class="text-center">No books found</td>
+                                                <td colspan="6" class="text-center">No books found</td>
                                             </tr>
                                         <?php endif; ?>
                                     </tbody>
@@ -698,6 +733,7 @@ try {
                         <table class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Borrower</th>
                                     <th>Book</th>
                                     <th>Date Borrowed</th>
@@ -710,6 +746,7 @@ try {
                                 <?php if (count($borrowedBooks) > 0): ?>
                                     <?php foreach ($borrowedBooks as $book): ?>
                                     <tr class="<?php echo $book['days_out'] > 14 ? 'overdue-highlight' : ''; ?>">
+                                        <td><?php echo htmlspecialchars($book['book_id']); ?></td>
                                         <td>
                                             <?php 
                                             echo htmlspecialchars($book['first_name']) . ' ';
@@ -760,7 +797,7 @@ try {
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center">No books currently borrowed</td>
+                                        <td colspan="7" class="text-center">No books currently borrowed</td>
                                     </tr>
                                 <?php endif; ?>
                             </tbody>
@@ -768,7 +805,6 @@ try {
                     </div>
                 </div>
             </div>
-
         <?php elseif ($page === 'admin'): ?>
             <!-- Admin Panel Card -->
             <div class="card">
@@ -830,6 +866,7 @@ try {
                                     <th>Genre</th>
                                     <th>Status</th>
                                     <th>Borrower</th>
+                                    <th>Days Out</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -860,6 +897,25 @@ try {
                                                 }
                                                 $borrowerName .= ' ' . htmlspecialchars($borrower['last_name']);
                                                 echo $borrowerName;
+                                            } else {
+                                                echo 'N/A';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $stmt = $pdo->prepare("SELECT DATEDIFF(CURDATE(), date_borrowed) as days_out FROM borrowed_books WHERE book_id = ?");
+                                            $stmt->execute([$book['id']]);
+                                            $borrowed = $stmt->fetch(PDO::FETCH_ASSOC);
+                                            if ($borrowed && $book['status'] === 'Not Available') {
+                                                $days_out = $borrowed['days_out'];
+                                                if ($days_out > 14) {
+                                                    echo '<span class="badge bg-danger">' . $days_out . ' days</span>';
+                                                } elseif ($days_out > 7) {
+                                                    echo '<span class="badge bg-warning text-dark">' . $days_out . ' days</span>';
+                                                } else {
+                                                    echo '<span class="badge bg-info">' . $days_out . ' days</span>';
+                                                }
                                             } else {
                                                 echo 'N/A';
                                             }
@@ -939,53 +995,51 @@ try {
                 </div>
                 <div class="col-md-6 text-md-end">
                     <p>Version 1.0.0</p>
-                
                 </div>
             </div>
         </div>
     </footer>
 
-   <!-- Quick Actions -->
-<div class="quick-actions">
-    <div class="floating-btn" data-bs-toggle="modal" data-bs-target="#quickActionsModal">
-        <i class="fas fa-plus"></i>
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <div class="floating-btn" data-bs-toggle="modal" data-bs-target="#quickActionsModal">
+            <i class="fas fa-plus"></i>
+        </div>
     </div>
-</div>
 
-<!-- Quick Actions Modal -->
-<div class="modal fade" id="quickActionsModal" tabindex="-1" aria-labelledby="quickActionsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="quickActionsModalLabel">Quick Actions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-grid gap-2">
-                    <a href="?page=home" class="btn btn-outline-light">
-                        <i class="fas fa-home me-2"></i> Dashboard
-                    </a>
-                    <a href="?page=borrowed" class="btn btn-outline-light">
-                        <i class="fas fa-hand-holding-heart me-2"></i> Borrowed Books
-                    </a>
-                    <a href="?page=admin" class="btn btn-outline-light">
-                        <i class="fas fa-user-shield me-2"></i> Admin Panel
-                    </a>
-                    <a href="#" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="tab" data-bs-target="#borrow-tab-pane">
-                        <i class="fas fa-paper-plane me-2"></i> New Borrowing Request
-                    </a>
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jweek967@gmail.com&su=Library%20Inquiry&body=Hello%20Library%20Team,%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20a%20library%20matter.%20Please%20let%20me%20know%20how%20I%20can%20proceed.%0D%0A%0D%0AThanks,%0D%0A[Your%20Name]" class="btn btn-success">
-                        <i class="fas fa-envelope me-2"></i> Send Gmail
-                    </a>
+    <!-- Quick Actions Modal -->
+    <div class="modal fade" id="quickActionsModal" tabindex="-1" aria-labelledby="quickActionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quickActionsModalLabel">Quick Actions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-grid gap-2">
+                        <a href="?page=home" class="btn btn-outline-light">
+                            <i class="fas fa-home me-2"></i> Dashboard
+                        </a>
+                        <a href="?page=borrowed" class="btn btn-outline-light">
+                            <i class="fas fa-hand-holding-heart me-2"></i> Borrowed Books
+                        </a>
+                        <a href="?page=admin" class="btn btn-outline-light">
+                            <i class="fas fa-user-shield me-2"></i> Admin Panel
+                        </a>
+                        <a href="#" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="tab" data-bs-target="#borrow-tab-pane">
+                            <i class="fas fa-paper-plane me-2"></i> New Borrowing Request
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jweek967@gmail.com&su=Library%20Inquiry&body=Hello%20Library%20Team,%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20a%20library%20matter.%20Please%20let%20me%20know%20how%20I%20can%20proceed.%0D%0A%0D%0AThanks,%0D%0A[Your%20Name]" class="btn btn-success">
+                            <i class="fas fa-envelope me-2"></i> Send Gmail
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    cunt>
     
     <?php include 'function/adminsearch.php'; ?>
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
 </body>
 </html>
