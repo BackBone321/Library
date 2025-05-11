@@ -527,85 +527,85 @@ try {
                                 </div>
                                 
                           <!-- Book Selection Card -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h5 class="mb-0"><i class="fas fa-book me-2"></i>Select Books to Borrow</h5>
-    </div>
-    <div class="card-body">
-        <!-- Search and Filter -->
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
-                           id="bookSearch" onkeyup="filterBooks()">
-                    <button class="btn btn-outline-light" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check form-switch">
-                    
-                    <input class="form-check-input" type="checkbox" id="showOnlyAvailable" onchange="filterBooks()">
-                    <label class="form-check-label" for="showOnlyAvailable">Show only available books</label>
-                </div>
-                <button type="submit" name="borrow" class="btn btn-primary mt-3">
-            <i class="fas fa-paper-plane me-2"></i>Submit Borrowing Request
-        </button>
-            </div>
-        </div>
-
-        <!-- Book List with Selection -->
-        <div class="table-responsive">
-            <table class="table table-hover" id="bookTable">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;"></th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Genre</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($allBooksForDisplay as $book): ?>
-                    <tr class="book-item <?php echo $book['status'] === 'Available' ? 'book-status-available' : 'book-status-unavailable'; ?>"
-                        data-status="<?php echo htmlspecialchars($book['status']); ?>"
-                        data-title="<?php echo htmlspecialchars($book['title']); ?>"
-                        data-author="<?php echo htmlspecialchars($book['author']); ?>"
-                        data-genre="<?php echo htmlspecialchars($book['genre']); ?>">
-                        <td>
-                            <?php if ($book['status'] === 'Available'): ?>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="selected_books[]" 
-                                      value="<?php echo $book['id']; ?>" id="book<?php echo $book['id']; ?>">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-book me-2"></i>Select Books to Borrow</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search and Filter -->
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="input-group">
+                                    <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
+                                        id="bookSearch" onkeyup="filterBooks()">
+                                    <button class="btn btn-outline-light" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($book['title']); ?></td>
-                        <td><?php echo htmlspecialchars($book['author']); ?></td>
-                        <td><?php echo htmlspecialchars($book['genre']); ?></td>
-                        <td>
-                            <?php if ($book['status'] === 'Available'): ?>
-                                <span class="badge bg-success">Available</span>
-                            <?php else: ?>
-                                <span class="badge bg-danger">Borrowed</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+                            <div class="col-md-4">
+                                <div class="form-check form-switch">
+                                    
+                                    <input class="form-check-input" type="checkbox" id="showOnlyAvailable" onchange="filterBooks()">
+                                    <label class="form-check-label" for="showOnlyAvailable">Show only available books</label>
+                                </div>
+                                <button type="submit" name="borrow" class="btn btn-primary mt-3">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Borrowing Request
+                        </button>
+                            </div>
+                        </div>
+
+                                                                <!-- Book List with Selection -->
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover" id="bookTable">
+                                                                        <thead>
+                                                                    <tr>
+                                                                        <th style="width: 50px;"></th>
+                                                                        <th>Title</th>
+                                                                        <th>Author</th>
+                                                                        <th>Genre</th>
+                                                                        <th>Status</th>
+                                                                    </tr>
+                                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($allBooksForDisplay as $book): ?>
+                                                <tr class="book-item <?php echo $book['status'] === 'Available' ? 'book-status-available' : 'book-status-unavailable'; ?>"
+                                                    data-status="<?php echo htmlspecialchars($book['status']); ?>"
+                                                    data-title="<?php echo htmlspecialchars($book['title']); ?>"
+                                                    data-author="<?php echo htmlspecialchars($book['author']); ?>"
+                                                    data-genre="<?php echo htmlspecialchars($book['genre']); ?>">
+                                                    <td>
+                                                        <?php if ($book['status'] === 'Available'): ?>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="selected_books[]" 
+                                                                value="<?php echo $book['id']; ?>" id="book<?php echo $book['id']; ?>">
+                                                        </div>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td><?php echo htmlspecialchars($book['title']); ?></td>
+                                                    <td><?php echo htmlspecialchars($book['author']); ?></td>
+                                                    <td><?php echo htmlspecialchars($book['genre']); ?></td>
+                                                    <td>
+                                                        <?php if ($book['status'] === 'Available'): ?>
+                                                            <span class="badge bg-success">Available</span>
+                                                        <?php else: ?>
+                                                            <span class="badge bg-danger">Borrowed</span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
         
-        <!-- No Books Message -->
-        <div id="noBooks" class="alert alert-info text-center d-none">
-            <i class="fas fa-info-circle me-2"></i> No books match your search criteria
-        </div>
-        
-       
-    </div>
-</div>
+                                        <!-- No Books Message -->
+                                        <div id="noBooks" class="alert alert-info text-center d-none">
+                                            <i class="fas fa-info-circle me-2"></i> No books match your search criteria
+                                        </div>
+                                        
+                                    
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         
@@ -938,7 +938,7 @@ try {
                     <p>© <?php echo date('Y'); ?> Library Hub. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p>Contact us in jhakedalis893@gmail.com</p>
+                    <p>Version 1.0.0</p>
                 
                 </div>
             </div>
