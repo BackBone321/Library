@@ -311,8 +311,8 @@
         <div class="container">
             <a class="navbar-brand" href="?page=home">
                 <i class="fas fa-book-reader"></i>
-                Library
-            </a>
+                 LIBRARY Opening hours - monday to friday 8:00 am to 5:00 pm
+            </a> 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
