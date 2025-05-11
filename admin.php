@@ -381,7 +381,7 @@ try {
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="?page=home">
-                <i class="fas fa-book-reader"></i> Library 
+                <i class="fas fa-book-reader"></i> Library
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -545,9 +545,13 @@ try {
             </div>
             <div class="col-md-4">
                 <div class="form-check form-switch">
+                    
                     <input class="form-check-input" type="checkbox" id="showOnlyAvailable" onchange="filterBooks()">
                     <label class="form-check-label" for="showOnlyAvailable">Show only available books</label>
                 </div>
+                <button type="submit" name="borrow" class="btn btn-primary mt-3">
+            <i class="fas fa-paper-plane me-2"></i>Submit Borrowing Request
+        </button>
             </div>
         </div>
 
@@ -599,9 +603,7 @@ try {
             <i class="fas fa-info-circle me-2"></i> No books match your search criteria
         </div>
         
-        <button type="submit" name="borrow" class="btn btn-primary mt-3">
-            <i class="fas fa-paper-plane me-2"></i>Submit Borrowing Request
-        </button>
+       
     </div>
 </div>
                             </form>
@@ -943,40 +945,43 @@ try {
         </div>
     </footer>
 
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-        <div class="floating-btn" data-bs-toggle="modal" data-bs-target="#quickActionsModal">
-            <i class="fas fa-plus"></i>
-        </div>
+   <!-- Quick Actions -->
+<div class="quick-actions">
+    <div class="floating-btn" data-bs-toggle="modal" data-bs-target="#quickActionsModal">
+        <i class="fas fa-plus"></i>
     </div>
+</div>
 
-    <!-- Quick Actions Modal -->
-    <div class="modal fade" id="quickActionsModal" tabindex="-1" aria-labelledby="quickActionsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="quickActionsModalLabel">Quick Actions</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-grid gap-2">
-                        <a href="?page=home" class="btn btn-outline-light">
-                            <i class="fas fa-home me-2"></i> Dashboard
-                        </a>
-                        <a href="?page=borrowed" class="btn btn-outline-light">
-                            <i class="fas fa-hand-holding-heart me-2"></i> Borrowed Books
-                        </a>
-                        <a href="?page=admin" class="btn btn-outline-light">
-                            <i class="fas fa-user-shield me-2"></i> Admin Panel
-                        </a>
-                        <a href="#" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="tab" data-bs-target="#borrow-tab-pane">
-                            <i class="fas fa-paper-plane me-2"></i> New Borrowing Request
-                        </a>
-                    </div>
+<!-- Quick Actions Modal -->
+<div class="modal fade" id="quickActionsModal" tabindex="-1" aria-labelledby="quickActionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quickActionsModalLabel">Quick Actions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-grid gap-2">
+                    <a href="?page=home" class="btn btn-outline-light">
+                        <i class="fas fa-home me-2"></i> Dashboard
+                    </a>
+                    <a href="?page=borrowed" class="btn btn-outline-light">
+                        <i class="fas fa-hand-holding-heart me-2"></i> Borrowed Books
+                    </a>
+                    <a href="?page=admin" class="btn btn-outline-light">
+                        <i class="fas fa-user-shield me-2"></i> Admin Panel
+                    </a>
+                    <a href="#" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="tab" data-bs-target="#borrow-tab-pane">
+                        <i class="fas fa-paper-plane me-2"></i> New Borrowing Request
+                    </a>
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jweek967@gmail.com&su=Library%20Inquiry&body=Hello%20Library%20Team,%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20a%20library%20matter.%20Please%20let%20me%20know%20how%20I%20can%20proceed.%0D%0A%0D%0AThanks,%0D%0A[Your%20Name]" class="btn btn-success">
+                        <i class="fas fa-envelope me-2"></i> Send Gmail
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
     
     <?php include 'function/adminsearch.php'; ?>
     <!-- Bootstrap JS Bundle with Popper -->
