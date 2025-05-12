@@ -843,101 +843,137 @@ try {
                     </form>
 
                     <!-- List All Books -->
-                    <h6 class="mb-3">All Books</h6>
-                    <form method="GET" action="" class="mb-4">
-                        <input type="hidden" name="page" value="admin">
-                        <div class="input-group">
-                            <input type="text" id="admin-search-input" name="search" class="form-control" placeholder="Search by title, author, or genre" value="<?php echo htmlspecialchars($searchTerm); ?>">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-                        </div>
+                    <!-- Inside the Admin Panel Card -->
+<h6 class="mb-3">All Books</h6>
+<form method="GET" action="" class="mb-4">
+    <input type="hidden" name="page" value="admin">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-8">
+            <div class="input-group">
+                <input type="text" id="admin-search-input" name="search" class="form-control" placeholder="Search by title, author, or genre" value="<?php echo htmlspecialchars($searchTerm ?? ''); ?>">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="status_filter" class="form-label">Status</label>
+            <select class="form-select" id="status_filter" name="status_filter" onchange="this.form.submit()">
+                <option value="" <?php echo !isset($_GET['status_filter']) || $_GET['status_filter'] === '' ? 'selected' : ''; ?>>All</option>
+                <option value="available" <?php echo isset($_GET['status_filter']) && $_GET['status_filter'] === 'available' ? 'selected' : ''; ?>>Available</option>
+                <option value="request" <?php echo isset($_GET['status_filter']) && $_GET['status_filter'] === 'request' ? 'selected' : ''; ?>>Request</option>
+                <option value="not_available" <?php echo isset($_GET['status_filter']) && $_GET['status_filter'] === 'not_available' ? 'selected' : ''; ?>>Not Available</option>
+                <option value="overdue" <?php echo isset($_GET['status_filter']) && $_GET['status_filter'] === 'overdue' ? 'selected' : ''; ?>>Overdue</option>
+            </select>
+        </div>
+    </div>
+</form>
+
+<?php if (!empty($searchTerm)): ?>
+    <p class="text-muted mb-3">Showing results for: <strong><?php echo htmlspecialchars($searchTerm); ?></strong></p>
+<?php endif; ?>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Status</th>
+                <th>Borrower</th>
+                <th>Days Out</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="admin-books-table">
+            <?php
+            // Fetch books with days_out calculation and apply status filter
+            $sql = "SELECT b.*, 
+                    DATEDIFF(CURDATE(), bb.date_borrowed) as days_out,
+                    br.first_name, br.middle_name, br.last_name
+                    FROM books b 
+                    LEFT JOIN borrowed_books bb ON b.id = bb.book_id 
+                    LEFT JOIN borrowers br ON bb.borrower_id = br.id 
+                    WHERE 1=1";
+
+            $params = [];
+            if (!empty($searchTerm)) {
+                $sql .= " AND (b.title LIKE ? OR b.author LIKE ? OR b.genre LIKE ?)";
+                $searchPattern = "%$searchTerm%";
+                $params = [$searchPattern, $searchPattern, $searchPattern];
+            }
+
+// Apply status filter based on days_out and availability
+$statusFilter = isset($_GET['status_filter']) ? $_GET['status_filter'] : '';
+if ($statusFilter === 'available') {
+    $sql .= " AND bb.book_id IS NULL"; // Not borrowed
+} elseif ($statusFilter === 'request') {
+    $sql .= " AND bb.book_id IS NOT NULL AND DATEDIFF(CURDATE(), bb.date_borrowed) BETWEEN -50 AND -1";
+} elseif ($statusFilter === 'not_available') {
+    $sql .= " AND bb.book_id IS NOT NULL AND DATEDIFF(CURDATE(), bb.date_borrowed) BETWEEN 1 AND 14";
+} elseif ($statusFilter === 'overdue') {
+    $sql .= " AND bb.book_id IS NOT NULL AND DATEDIFF(CURDATE(), bb.date_borrowed) BETWEEN 15 AND 500";
+}
+
+            $sql .= " ORDER BY b.id ASC";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
+            $filteredBooks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($filteredBooks as $book):
+                $days_out = $book['days_out'] !== null ? $book['days_out'] : 'N/A';
+                $borrowerName = 'N/A';
+                if ($book['first_name']) {
+                    $borrowerName = htmlspecialchars($book['first_name']);
+                    if (!empty($book['middle_name'])) {
+                        $borrowerName .= ' ' . htmlspecialchars($book['middle_name']);
+                    }
+                    $borrowerName .= ' ' . htmlspecialchars($book['last_name']);
+                }
+            ?>
+            <tr>
+                <td><?php echo htmlspecialchars($book['id']); ?></td>
+                <td><?php echo htmlspecialchars($book['title']); ?></td>
+                <td><?php echo htmlspecialchars($book['author']); ?></td>
+                <td><?php echo htmlspecialchars($book['genre']); ?></td>
+                <td>
+                    <span class="badge <?php echo $book['status'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
+                        <?php echo htmlspecialchars($book['status']); ?>
+                    </span>
+                </td>
+                <td><?php echo $borrowerName; ?></td>
+                <td>
+                    <?php
+                    if ($days_out !== 'N/A') {
+                        if ($days_out > 14) {
+                            echo '<span class="badge bg-danger">' . $days_out . ' days</span>';
+                        } elseif ($days_out > 7) {
+                            echo '<span class="badge bg-warning text-dark">' . $days_out . ' days</span>';
+                        } else {
+                            echo '<span class="badge bg-info">' . $days_out . ' days</span>';
+                        }
+                    } else {
+                        echo 'N/A';
+                    }
+                    ?>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editBookModal<?php echo $book['id']; ?>">
+                        <i class="fas fa-edit me-1"></i>Edit
+                    </button>
+                    <form method="POST" action="" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this book?');">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                        <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
+                        <button type="submit" name="delete_book" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt me-1"></i>Delete
+                        </button>
                     </form>
-
-                    <?php if (!empty($searchTerm)): ?>
-                        <p class="text-muted mb-3">Showing results for: <strong><?php echo htmlspecialchars($searchTerm); ?></strong></p>
-                    <?php endif; ?>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>Genre</th>
-                                    <th>Status</th>
-                                    <th>Borrower</th>
-                                    <th>Days Out</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-books-table">
-                                <?php foreach ($allBooksForDisplay as $book): ?>
-                                    <tr>
-                                        <td><?php echo htmlspecialchars($book['id']); ?></td>
-                                        <td><?php echo htmlspecialchars($book['title']); ?></td>
-                                        <td><?php echo htmlspecialchars($book['author']); ?></td>
-                                        <td><?php echo htmlspecialchars($book['genre']); ?></td>
-                                        <td>
-                                            <span class="badge <?php echo $book['status'] === 'Available' ? 'bg-success' : 'bg-danger'; ?>">
-                                                <?php echo htmlspecialchars($book['status']); ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            $stmt = $pdo->prepare("SELECT b.first_name, b.middle_name, b.last_name 
-                                                                FROM borrowed_books bb 
-                                                                JOIN borrowers b ON bb.borrower_id = b.id 
-                                                                WHERE bb.book_id = ?");
-                                            $stmt->execute([$book['id']]);
-                                            $borrower = $stmt->fetch(PDO::FETCH_ASSOC);
-                                            if ($borrower) {
-                                                $borrowerName = htmlspecialchars($borrower['first_name']);
-                                                if (!empty($borrower['middle_name'])) {
-                                                    $borrowerName .= ' ' . htmlspecialchars($borrower['middle_name']);
-                                                }
-                                                $borrowerName .= ' ' . htmlspecialchars($borrower['last_name']);
-                                                echo $borrowerName;
-                                            } else {
-                                                echo 'N/A';
-                                            }
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            $stmt = $pdo->prepare("SELECT DATEDIFF(CURDATE(), date_borrowed) as days_out FROM borrowed_books WHERE book_id = ?");
-                                            $stmt->execute([$book['id']]);
-                                            $borrowed = $stmt->fetch(PDO::FETCH_ASSOC);
-                                            if ($borrowed && $book['status'] === 'Not Available') {
-                                                $days_out = $borrowed['days_out'];
-                                                if ($days_out > 14) {
-                                                    echo '<span class="badge bg-danger">' . $days_out . ' days</span>';
-                                                } elseif ($days_out > 7) {
-                                                    echo '<span class="badge bg-warning text-dark">' . $days_out . ' days</span>';
-                                                } else {
-                                                    echo '<span class="badge bg-info">' . $days_out . ' days</span>';
-                                                }
-                                            } else {
-                                                echo 'N/A';
-                                            }
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-warning btn-sm me-1" data-bs-toggle="modal" data-bs-target="#editBookModal<?php echo $book['id']; ?>">
-                                                <i class="fas fa-edit me-1"></i>Edit
-                                            </button>
-                                            <form method="POST" action="" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this book?');">
-                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                                                <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
-                                                <button type="submit" name="delete_book" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash-alt me-1"></i>Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
                 </div>
             </div>
 
