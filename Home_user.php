@@ -777,7 +777,8 @@ try {
                         <a href="#" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="tab" data-bs-target="#borrow-tab-pane">
                             <i class="fas fa-paper-plane me-2"></i> New Borrowing Request
                         </a>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jweek967@gmail.com&su=Library%20Inquiry&body=Hello%20Library%20Team,%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20a%20library%20matter.%20Please%20let%20me%20know%20how%20I%20can%20proceed.%0D%0A%0D%0AThanks,%0D%0A[Your%20Name]" class="btn btn-success">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jweek967@gmail.com&su=Library%20Inquiry&body=Please%20add%20your%20Gmail%20account%20at%20the%20top%20before%20sending%20this%20email.%0D%0A%0D%0AHello%20Library%20Team,%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20a%20library%20matter.%20Please%20let%20me%20know%20how%20I%20can%20proceed.%0D%0A%0D%0AThanks,%0D%0A[Your%20Name]
+" class="btn btn-success">
                             <i class="fas fa-envelope me-2"></i> Send Gmail
                         </a>
                     </div>
