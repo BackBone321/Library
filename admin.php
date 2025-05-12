@@ -476,8 +476,7 @@ try {
                 </div>
                 <div class="card-body p-0">
                     <div class="tab-content p-3" id="libraryTabsContent">
-                        <!-- Borrow Books Tab -->
-                 
+                       <!-- Borrow Books Tab -->
 <div class="tab-pane fade show active" id="borrow-tab-pane" role="tabpanel" aria-labelledby="borrow-tab" tabindex="0">
     <form method="POST" action="" onsubmit="console.log('Borrow form submitted');">
         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
@@ -537,7 +536,6 @@ try {
                         <div class="input-group">
                             <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
                                 id="bookSearch" onkeyup="filterBooks()">
-                           
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -556,8 +554,8 @@ try {
                     <table class="table table-hover" id="bookTable">
                         <thead>
                             <tr>
-                                <th style="width: 50px;">ID</th>
-                                <th style="width: 50px;"></th>
+                                <th style="width: 50px;"></th> <!-- Checkbox column first -->
+                                <th style="width: 50px;">ID</th> <!-- ID column second -->
                                 <th>Title</th>
                                 <th>Author</th>
                                 <th>Genre</th>
@@ -572,8 +570,7 @@ try {
                                 data-title="<?php echo htmlspecialchars($book['title']); ?>"
                                 data-author="<?php echo htmlspecialchars($book['author']); ?>"
                                 data-genre="<?php echo htmlspecialchars($book['genre']); ?>">
-                                <td><?php echo htmlspecialchars($book['id']); ?></td>
-                                <td>
+                                <td> <!-- Checkbox in first column -->
                                     <?php if ($book['status'] === 'Available'): ?>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="selected_books[]" 
@@ -581,6 +578,7 @@ try {
                                     </div>
                                     <?php endif; ?>
                                 </td>
+                                <td><?php echo htmlspecialchars($book['id']); ?></td> <!-- ID in second column -->
                                 <td><?php echo htmlspecialchars($book['title']); ?></td>
                                 <td><?php echo htmlspecialchars($book['author']); ?></td>
                                 <td><?php echo htmlspecialchars($book['genre']); ?></td>
@@ -615,6 +613,15 @@ try {
                         </tbody>
                     </table>
                 </div>
+
+                <!-- No Books Message -->
+                <div id="noBooks" class="alert alert-info text-center d-none">
+                    <i class="fas fa-info-circle me-2"></i> No books match your search criteria
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
                 <!-- No Books Message -->
                 <div id="noBooks" class="alert alert-info text-center d-none">
