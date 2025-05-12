@@ -721,7 +721,7 @@ try {
                         <input type="hidden" name="page" value="borrowed">
                         <div class="input-group">
                             <input type="text" id="borrowed-search-input" name="search" class="form-control" placeholder="Search by student ID, name, title, or author" value="<?php echo htmlspecialchars($searchTerm); ?>">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                            
                         </div>
                     </form>
 
@@ -851,7 +851,7 @@ try {
         <div class="col-md-8">
             <div class="input-group">
                 <input type="text" id="admin-search-input" name="search" class="form-control" placeholder="Search by title, author, or genre" value="<?php echo htmlspecialchars($searchTerm ?? ''); ?>">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                
             </div>
         </div>
         <div class="col-md-4">
