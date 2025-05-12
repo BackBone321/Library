@@ -373,7 +373,7 @@ try {
         <div class="stats-card" style="background: linear-gradient(45deg, #FFC107, #87CEEB);">
             <div class="icon"><i class="fas fa-hand-holding-heart"></i></div>
             <div class="count"><?php echo $borrowedBooksCount; ?></div>
-            <div class="title">Borrowed Books</div>
+            <div class="title">Borrowed Books and Request</div>
         </div>
     </div>
     <div class="col-lg-3 col-md-6">
