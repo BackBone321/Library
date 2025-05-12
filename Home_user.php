@@ -565,9 +565,7 @@ try {
                                         <div class="input-group">
                                             <input type="search" class="form-control" placeholder="Search by title, author, or genre" 
                                                    name="search" id="catalogSearch" value="<?php echo htmlspecialchars($searchTerm); ?>">
-                                            <button class="btn btn-outline-light" type="submit">
-                                                <i class="fas fa-search"></i> Search
-                                            </button>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-4">
