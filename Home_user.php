@@ -654,8 +654,10 @@ try {
                 <div class="card-header">
                     <h5 class="mb-0"><i class="fas fa-hand-holding-heart me-2"></i>Borrowed Books</h5>
                 </div>
+                
                 <div class="card-body">
                     <div class="table-responsive">
+                        
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -709,15 +711,19 @@ try {
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <form method="POST" action="" class="d-inline">
-                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                                                <input type="hidden" name="borrowed_id" value="<?php echo $book['id']; ?>">
-                                                <input type="hidden" name="book_id" value="<?php echo $book['book_id']; ?>">
-                                                <button type="submit" name="return" class="btn btn-success btn-sm" 
-                                                        onclick="return confirm('Confirm this book has been returned?')">
-                                                    <i class="fas fa-check-circle me-1"></i> Return
-                                                </button>
-                                            </form>
+                                            <?php if ($book['days_out'] >= -500 && $book['days_out'] <= 0): ?>
+                                                <form method="POST" action="" class="d-inline">
+                                                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                                                    <input type="hidden" name="borrowed_id" value="<?php echo $book['id']; ?>">
+                                                    <input type="hidden" name="book_id" value="<?php echo $book['book_id']; ?>">
+                                                    <button type="submit" name="return" class="btn btn-success btn-sm" 
+                                                            onclick="return confirm('Confirm this book has been returned?')">
+                                                        <i class="fas fa-check-circle me-1"></i> Return
+                                                    </button>
+                                                </form>
+                                            <?php else: ?>
+                                                
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>
