@@ -1,0 +1,26 @@
+<?php
+include 'db.php';
+
+$id = (int)$_GET['id'];
+$action = $_GET['action'];
+
+if ($action == 'approve') {
+    $conn->query("UPDATE requests SET status='Approved' WHERE id=$id");
+
+    $request = $conn->query("SELECT * FROM requests WHERE id=$id")->fetch_assoc();
+    $item = $conn->real_escape_string($request['item_name']);
+    $qty = (int)$request['quantity'];
+
+    $check = $conn->query("SELECT * FROM supplies WHERE item_name='$item'");
+    if ($check->num_rows > 0) {
+        $conn->query("UPDATE supplies SET quantity = quantity + $qty WHERE item_name='$item'");
+    } else {
+        $conn->query("INSERT INTO supplies (item_name, quantity) VALUES ('$item', $qty)");
+    }
+
+} elseif ($action == 'decline') {
+    $conn->query("UPDATE requests SET status='Declined' WHERE id=$id");
+}
+
+header("Location: notify.php");
+?>

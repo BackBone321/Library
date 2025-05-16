@@ -12,13 +12,44 @@ $errorMessage = '';
 if (isset($_SESSION['success_message'])) {
     $successMessage = $_SESSION['success_message'];
     unset($_SESSION['success_message']);
-}
+}   
 if (isset($_SESSION['error_message'])) {
     $errorMessage = $_SESSION['error_message'];
     unset($_SESSION['error_message']);
 }
 
 try {
+    // Database connection with UTF-8 encoding
+    $pdo = new PDO("mysql:host=localhost;dbname=library;charset=utf8mb4", "root", "");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Handle send message request
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send_message'])) {
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $_SESSION['error_message'] = "Security validation failed";
+            header("Location: " . $_SERVER['PHP_SELF'] . "?page=borrowed");
+            exit;
+        }
+
+        $borrower_id = filter_input(INPUT_POST, 'borrower_id', FILTER_VALIDATE_INT);
+        $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $errors = [];
+        if (!$borrower_id) $errors[] = "Invalid borrower ID";
+        if (empty($message)) $errors[] = "Message cannot be empty";
+
+        if (empty($errors)) {
+            $stmt = $pdo->prepare("INSERT INTO notifications (borrower_id, message) VALUES (?, ?)");
+            $stmt->execute([$borrower_id, $message]);
+            $_SESSION['success_message'] = "Message sent successfully";
+            header("Location: " . $_SERVER['PHP_SELF'] . "?page=borrowed");
+            exit;
+        } else {
+            $_SESSION['error_message'] = implode(", ", $errors);
+            header("Location: " . $_SERVER['PHP_SELF'] . "?page=borrowed");
+            exit;
+        }
+    }
     // Database connection with UTF-8 encoding
     $pdo = new PDO("mysql:host=localhost;dbname=library;charset=utf8mb4", "root", "");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -812,7 +843,7 @@ try {
                     </div>
                 </div>
             </div>
-       <?php elseif ($page === 'admin'): ?>
+  <?php elseif ($page === 'admin'): ?>
     <!-- Admin Panel Card -->
     <div class="card">
         <div class="card-header">
@@ -854,10 +885,25 @@ try {
             <form method="GET" action="" class="mb-4">
                 <input type="hidden" name="page" value="admin">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-8">
+                    <div class="col-md-4">
                         <div class="input-group">
                             <input type="text" id="admin-search-input" name="search" class="form-control" placeholder="Search by title, author, or genre" value="<?php echo htmlspecialchars($searchTerm ?? ''); ?>">
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="genre_search" class="form-label">Search by Genre</label>
+                        <select class="form-select" id="genre_search" name="genre_search" onchange="this.form.submit()">
+                            <option value="">All Genres</option>
+                            <?php
+                            // Fetch unique genres from the database
+                            $stmt = $pdo->query("SELECT DISTINCT genre FROM books ORDER BY genre ASC");
+                            $genres = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                            foreach ($genres as $genre) {
+                                $selected = isset($_GET['genre_search']) && $_GET['genre_search'] === $genre ? 'selected' : '';
+                                echo "<option value=\"" . htmlspecialchars($genre) . "\" $selected>" . htmlspecialchars($genre) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-md-4">
                         <label for="status_filter" class="form-label">Status</label>
@@ -872,8 +918,17 @@ try {
                 </div>
             </form>
 
-            <?php if (!empty($searchTerm)): ?>
-                <p class="text-muted mb-3">Showing results for: <strong><?php echo htmlspecialchars($searchTerm); ?></strong></p>
+            <?php if (!empty($searchTerm) || !empty($_GET['genre_search'])): ?>
+                <p class="text-muted mb-3">
+                    Showing results for: 
+                    <?php 
+                    if (!empty($searchTerm)) echo "<strong>Search: " . htmlspecialchars($searchTerm) . "</strong>";
+                    if (!empty($_GET['genre_search'])) {
+                        if (!empty($searchTerm)) echo " and ";
+                        echo "<strong>Genre: " . htmlspecialchars($_GET['genre_search']) . "</strong>";
+                    }
+                    ?>
+                </p>
             <?php endif; ?>
 
             <div class="table-responsive">
@@ -892,7 +947,7 @@ try {
                     </thead>
                     <tbody id="admin-books-table">
                         <?php
-                        // Fetch books with days_out calculation and apply status filter
+                        // Fetch books with days_out calculation and apply filters
                         $sql = "SELECT b.*, 
                                 DATEDIFF(CURDATE(), bb.date_borrowed) as days_out,
                                 br.first_name, br.middle_name, br.last_name
@@ -906,6 +961,10 @@ try {
                             $sql .= " AND (b.title LIKE ? OR b.author LIKE ? OR b.genre LIKE ?)";
                             $searchPattern = "%$searchTerm%";
                             $params = [$searchPattern, $searchPattern, $searchPattern];
+                        }
+                        if (!empty($_GET['genre_search'])) {
+                            $sql .= " AND b.genre = ?";
+                            $params[] = $_GET['genre_search'];
                         }
 
                         // Apply status filter based on days_out and availability
@@ -1067,9 +1126,7 @@ try {
                         <a href="?page=admin" class="btn btn-outline-light">
                             <i class="fas fa-user-shield me-2"></i> Admin Panel
                         </a>
-                        <a href="#" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="tab" data-bs-target="#borrow-tab-pane">
-                            <i class="fas fa-paper-plane me-2"></i> New Borrowing Request
-                        </a>
+                       
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jweek967@gmail.com&su=Library%20Inquiry&body=Please%20add%20your%20Gmail%20account%20at%20the%20top%20before%20sending%20this%20email.%0D%0A%0D%0AHello%20Library%20Team,%0D%0A%0D%0AI%20would%20like%20to%20inquire%20about%20a%20library%20matter.%20Please%20let%20me%20know%20how%20I%20can%20proceed.%0D%0A%0D%0AThanks,%0D%0A[Your%20Name]
 " class="btn btn-success">
                             <i class="fas fa-envelope me-2"></i> Send Gmail

@@ -1,0 +1,330 @@
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+   
+   :root {
+            --primary-color: #3a72c9;
+            --secondary-color: #6c757d;
+            --accent-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --dark-bg: #212529;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), #1e3c72);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1rem 1.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2c5aa0;
+            border-color: #2c5aa0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #ced4da;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(58, 114, 201, 0.25);
+        }
+        
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .notification-wrapper {
+            position: relative;
+        }
+        
+        .notification-wrapper i {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .badge1 {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .supply-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .user-header-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: var(--accent-color) !important;
+        }
+        
+        .form-card {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .supply-icon-bg {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.03;
+            font-size: 15rem;
+            z-index: 0;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                text-align: center;
+            }
+            
+            .logo-container {
+                margin-bottom: 20px;
+            }
+        }
+
+
+        .header-section {
+            background-color: rgb(22, 2, 76);
+            color: white;
+            padding: 2rem 0;
+        }
+        .user-header-icon {
+            margin-right: 10px;
+        }
+        .lead {
+            opacity: 0.9;
+        }
+
+
+        
+ :root {
+            --primary-color: #4e73df;
+            --secondary-color: #1cc88a;
+            --accent-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --dark-color: #5a5c69;
+            --light-color: #f8f9fc;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .admin-header-icon {
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .card {
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid transparent;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 1rem 1.5rem;
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-header .card-title {
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .custom-form label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--dark-color);
+        }
+        
+        .custom-form .form-control, .custom-form .form-select {
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid #e3e6f0;
+        }
+        
+        .custom-form .form-control:focus, .custom-form .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a5fd9;
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #17a673;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #e02d1b;
+        }
+        
+        .table thead th {
+            background-color: #f8f9fc;
+            color: var(--dark-color);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            border-bottom: none;
+            padding: 1rem;
+        }
+        
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-top: 1px solid #f3f3f3;
+        }
+        
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.35em 0.65em;
+        }
+        
+        .card-add-supply {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .card-transaction {
+            border-left-color: var(--primary-color);
+        }
+        
+        .card-status {
+            border-left-color: var(--accent-color);
+        }
+        
+        .card-all-supplies {
+            border-left-color: var(--dark-color);
+        }
+        
+        .status-icon {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #f1f5ff;
+            margin-bottom: 1rem;
+        }
+        
+        .notification-wrapper {
+            position: relative;
+        }
+        
+        .notification-wrapper a {
+            color: var(--dark-color);
+            transition: color 0.2s;
+        }
+        
+        .notification-wrapper a:hover {
+            color: var(--primary-color);
+        }
+        
+        .fade-request {
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+            }
+            
+            .admin-header-icon {
+                font-size: 1.5rem !important;
+            }
+        }
